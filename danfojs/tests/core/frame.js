@@ -30,15 +30,24 @@ describe("DataFrame", function () {
 
   // });
 
-  describe("drop", function () {
-    it("throw error for wrong row index", function () {
-      let data = [ [ 1, 2, 3 ], [ 4, 5, 6 ] ];
-      let cols = [ "A", "B", "C" ];
+  it("should be created from data containing any column names", () => {
+    const data = [ { name: "test1", index: 0, size: 1 }, { name: "test2", index: 1, size: 1 } ];
+    const df = new dfd.DataFrame(data);
+
+    assert.deepEqual(df.tail(1), [ [ 'test2', 1, 1 ] ]);
+  });
+
+  describe("drop", function() {
+    it("throw error for wrong row index", function() {
+      let data = [[1, 2, 3], [4, 5, 6]];
+      let cols = ["A", "B", "C"];
       let df = new dfd.DataFrame(data, { columns: cols });
-      assert.throws(function () { df.drop({ columns: [ 3 ], axis: 0, inplace: false }); }, Error, 'No index label found. Axis of 0 must be accompanied by an array of index labels');
+      assert.throws(function() {
+        df.drop({ columns: [3], axis: 0, inplace: false });
+      }, Error, "No index label found. Axis of 0 must be accompanied by an array of index labels");
     });
-    it("throw error for wrong row index", function () {
-      let data = [ [ 1, 2, 3 ], [ 4, 5, 6 ] ];
+    it("throw error for wrong row index", function() {
+      let data = [[1, 2, 3], [4, 5, 6]];
       let cols = [ "A", "B", "C" ];
       let df = new dfd.DataFrame(data, { columns: cols });
       assert.throws(function () { df.drop({ columns: [ "D" ], axis: 1, inplace: false }); }, Error, 'column "D" does not exist');
